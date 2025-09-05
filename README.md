@@ -7,6 +7,7 @@ A Model Context Protocol (MCP) server that provides browser automation capabilit
 - **Fast and lightweight**. Uses Playwright's accessibility tree, not pixel-based input.
 - **LLM-friendly**. No vision models needed, operates purely on structured data.
 - **Deterministic tool application**. Avoids ambiguity common with screenshot-based approaches.
+- **Multi-browser support**. Manage multiple independent browser contexts simultaneously via programmatic API.
 
 ### Requirements
 - Node.js 18 or newer
@@ -754,3 +755,43 @@ http.createServer(async (req, res) => {
 
 
 <!--- End of tools generated section -->
+
+## Multi-Browser Support
+
+The package now supports managing multiple independent browser contexts simultaneously through the programmatic API. This allows you to:
+
+- Create multiple browser instances with complete isolation
+- Navigate each browser independently without interference
+- Manage browser lifecycle (create, close, list)
+
+### Quick Example
+
+```javascript
+const { createMultiBrowserManager } = require('@playwright/mcp');
+
+// Create the manager
+const manager = await createMultiBrowserManager();
+
+// Create additional browsers
+await manager.createBrowser('browser2');
+await manager.createBrowser('mobile', { device: 'iPhone 15' });
+
+// Use each browser independently
+const browser1 = manager.getBrowser('default');
+const browser2 = manager.getBrowser('browser2');
+
+await browser1.callTool({
+  name: 'browser_navigate',
+  arguments: { url: 'https://example.com' }
+});
+
+await browser2.callTool({
+  name: 'browser_navigate',
+  arguments: { url: 'https://google.com' }
+});
+
+// Clean up
+await manager.closeAll();
+```
+
+For complete documentation and examples, see [MULTI_BROWSER.md](./MULTI_BROWSER.md).

@@ -15,4 +15,6 @@
  * limitations under the License.
  */
 
+// For now, just use the default Playwright MCP program
+// Multi-browser support is available through the programmatic API
 require('playwright/lib/mcp/program');
