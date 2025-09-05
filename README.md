@@ -795,3 +795,17 @@ await manager.closeAll();
 ```
 
 For complete documentation and examples, see [MULTI_BROWSER.md](./MULTI_BROWSER.md).
+
+### Demo Script
+
+Run the interactive demonstration to see multi-browser support in action:
+
+```bash
+node examples/multi-browser-demo.js
+```
+
+This demo script shows:
+- Creating multiple browser instances
+- Independent navigation and state management
+- Browser lifecycle management
+- Error handling and validation
