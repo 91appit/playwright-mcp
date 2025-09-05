@@ -20,4 +20,37 @@ import type { Config } from './config';
 import type { BrowserContext } from 'playwright';
 
 export declare function createConnection(config?: Config, contextGetter?: () => Promise<BrowserContext>): Promise<Server>;
+
+export interface ToolRequest {
+  name: string;
+  arguments: Record<string, any>;
+}
+
+export interface ToolResponse {
+  content: Array<{
+    type: 'text' | 'image' | 'resource';
+    text?: string;
+    data?: string;
+    uri?: string;
+  }>;
+  isError: boolean;
+}
+
+export interface BrowserInstance {
+  callTool(request: ToolRequest): Promise<ToolResponse>;
+  close(): Promise<void>;
+}
+
+export declare class MultiBrowserManager {
+  constructor();
+  initialize(config?: Config, contextGetter?: () => Promise<BrowserContext>): Promise<MultiBrowserManager>;
+  createBrowser(browserId: string, config?: Config, contextGetter?: () => Promise<BrowserContext>): Promise<BrowserInstance>;
+  getBrowser(browserId?: string): BrowserInstance;
+  listBrowsers(): string[];
+  closeBrowser(browserId: string): Promise<void>;
+  closeAll(): Promise<void>;
+}
+
+export declare function createMultiBrowserManager(config?: Config, contextGetter?: () => Promise<BrowserContext>): Promise<MultiBrowserManager>;
+
 export {};
